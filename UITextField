@@ -1,0 +1,20 @@
+import UIkit
+
+class ViewController: UIViewController, UITextFieldDelegate {
+
+@IBOutlet weak var textField: UITextField!
+
+override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        textField.delegate = self
+
+  }
+
+//textField should return//
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+}
