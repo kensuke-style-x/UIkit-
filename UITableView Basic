@@ -1,0 +1,62 @@
+import UIKit
+
+class ImageListScreen: UIViewController {
+
+    
+    @IBOutlet weak var tableView: UITableView!
+    
+    var images: [Image] = []
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        images = createArray()
+        
+        tableView.delegate = self
+        tableView.dataSource = self
+        
+    }
+    
+    func createArray()->[Image]{
+        
+        var tempImages: [Image] = []
+        
+        let image1 = Image(image:#imageLiteral(resourceName: "20C87EAA-92CC-4CCF-AA8D-A4E3CC221115.jpg") , title: "赤福" )
+        
+        let image2 = Image(image:#imageLiteral(resourceName: "20C87EAA-92CC-4CCF-AA8D-A4E3CC221115.jpg") , title: "20C87EAA-92CC-4CCF-AA8D-A4E3CC221115.jpg" )
+        
+        let image3 = Image(image:#imageLiteral(resourceName: "20C87EAA-92CC-4CCF-AA8D-A4E3CC221115.jpg") , title: "20C87EAA-92CC-4CCF-AA8D-A4E3CC221115.jpg" )
+        
+        let image4 = Image(image:#imageLiteral(resourceName: "20C87EAA-92CC-4CCF-AA8D-A4E3CC221115.jpg") , title: "20C87EAA-92CC-4CCF-AA8D-A4E3CC221115.jpg" )
+        
+        let image5 = Image(image:#imageLiteral(resourceName: "20C87EAA-92CC-4CCF-AA8D-A4E3CC221115.jpg") , title: "20C87EAA-92CC-4CCF-AA8D-A4E3CC221115.jpg" )
+        
+        tempImages.append(image1)
+        tempImages.append(image2)
+        tempImages.append(image3)
+        tempImages.append(image4)
+        tempImages.append(image5)
+        
+        return tempImages
+        
+    }
+}
+    
+extension ImageListScreen: UITableViewDataSource,UITableViewDelegate{
+        
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return images.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let image = images[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ImageTableViewCell") as! ImageTableViewCell
+        
+        cell.setImage(image: image)
+        
+        return cell
+    }
+    
+    }
+
