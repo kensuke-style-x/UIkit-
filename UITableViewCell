@@ -1,0 +1,14 @@
+import UIKit
+
+class ImageTableViewCell: UITableViewCell {
+
+    @IBOutlet weak var tableImageView: UIImageView!
+    
+    @IBOutlet weak var tableTitleLabel: UILabel!
+    
+    func setImage(image: Image) {
+        tableImageView.image = image.image
+        tableTitleLabel.text = image.title
+    }
+
+}
