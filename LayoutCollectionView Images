@@ -1,0 +1,60 @@
+import UIKit
+
+class LayoutViewController: UIViewController,UICollectionViewDataSource {
+    
+    private let layoutCollectionView = UICollectionView(frame: .zero, collectionViewLayout: LayoutViewController.createLayout())
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        view.addSubview(layoutCollectionView)
+        layoutCollectionView.register(LayoutCollectionViewCell.self, forCellWithReuseIdentifier: LayoutCollectionViewCell.identifier)
+        layoutCollectionView.frame = view.bounds
+        layoutCollectionView.backgroundColor = .white
+        layoutCollectionView.dataSource = self
+
+        // Do any additional setup after loading the view.
+    }
+    
+    static func createLayout()->UICollectionViewCompositionalLayout{
+        //Item
+        let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1)))
+        
+        //Group
+        let group = NSCollectionLayoutGroup.horizontal(
+            layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(2/5)), subitem: item, count: 2)
+        
+        //Sections
+        let section = NSCollectionLayoutSection(group: group)
+        
+        //Return
+        return UICollectionViewCompositionalLayout(section: section)
+        //
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        30
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: LayoutCollectionViewCell.identifier, for: indexPath)
+        
+        
+        return cell
+        
+    }
+    
+   
+    
+    /*
+    // MARK: - Navigation
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destination.
+        // Pass the selected object to the new view controller.
+    }
+    */
+
+}
