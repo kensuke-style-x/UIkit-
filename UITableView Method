@@ -63,7 +63,7 @@ class TodoListViewController: UITableViewController {
     }
     
     func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-        images.swapAt(sourceIndexPath.row, destinationIndexPath.row)
+        itemArray.swapAt(sourceIndexPath.row, destinationIndexPath.row)
     }
     
     
