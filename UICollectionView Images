@@ -2,7 +2,12 @@ import UIKit
 
 class ViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout{
     
-    
+    var images: [UIImage] = [
+        UIImage(named: "Image"),
+        UIImage(named: "Image"),
+        UIImage(named: "Image"),
+        UIImage(named: "Image")
+    ].compactMap({$0})
     
 
     @IBOutlet weak var collectionView: UICollectionView!
@@ -19,12 +24,40 @@ class ViewController: UIViewController,UICollectionViewDelegate,UICollectionView
         layout.itemSize = CGSize(width: 90, height: 160)
         collectionView.collectionViewLayout = layout
         
+        //gesture
+        let gesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPressGesture(_:)))
+        
+        collectionView.addGestureRecognizer(gesture)
+        
+    }
+    
+
+     //gesture delegate
+    @objc func handleLongPressGesture(_ gesture: UILongPressGestureRecognizer){
+        guard let collectionView = collectionView else {
+            return
+        }
+        switch gesture.state {
+        case.began:
+            guard let targetIndexPath = collectionView.indexPathForItem(at: gesture.location(in: collectionView)) else {
+                return
+            }
+            collectionView.beginInteractiveMovementForItem(at: targetIndexPath)
+            
+        case.changed:
+            collectionView.updateInteractiveMovementTargetPosition(gesture.location(in: collectionView))
+        case.ended:
+            collectionView.endInteractiveMovement()
+        default:
+            collectionView.cancelInteractiveMovement()
+        }
+        
         
     }
 
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 12
+        return images.count
     }
     
     
@@ -40,6 +73,16 @@ class ViewController: UIViewController,UICollectionViewDelegate,UICollectionView
         cell.configure(with: UIImage(named: "Image")!)
         
         return cell
+    }
+    
+    // Re-Order Method
+    func collectionView(_ collectionView: UICollectionView, canMoveItemAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, moveItemAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        let item = images.remove(at: sourceIndexPath.row)
+        images.insert(item, at: destinationIndexPath.row)
     }
     
     
