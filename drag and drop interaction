@@ -1,0 +1,59 @@
+import UIKit
+
+class ViewController: UIViewController, UIDragInteractionDelegate,UIDropInteractionDelegate{
+    
+    
+    
+
+    
+    @IBOutlet weak var imageView: UIImageView!
+    
+    
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        //drag Interaction
+        let dragInteraction = UIDragInteraction(delegate: self)
+        dragInteraction.isEnabled = true
+        imageView.addInteraction(dragInteraction)
+        // drop Interaction
+        let dropInteraction = UIDropInteraction(delegate: self)
+        view.addInteraction(dropInteraction)
+        
+        imageView.isUserInteractionEnabled = true
+        
+    }
+    // drag method
+    func dragInteraction(_ interaction: UIDragInteraction, itemsForBeginning session: UIDragSession) -> [UIDragItem] {
+        guard let image = imageView.image else { return []}
+        
+        let provider = NSItemProvider(object: image)
+        let item = UIDragItem(itemProvider: provider)
+        
+        item.localObject = image
+        return [item]
+    }
+    
+    //drop mehod
+    func dropInteraction(_ interaction: UIDropInteraction, canHandle session: UIDropSession) -> Bool {
+        return session.canLoadObjects(ofClass: UIImage.self)
+    }
+    
+    func dropInteraction(_ interaction: UIDropInteraction, performDrop session: UIDropSession) {
+        
+        for item in session.items {
+            let itemProvider = item.itemProvider
+            guard itemProvider.canLoadObject(ofClass: UIImage.self)
+            else {continue}
+            
+            itemProvider.loadObject(ofClass: UIImage.self, completionHandler: {(object, error)in
+                if let image = object as? UIImage {
+                    DispatchQueue.main.async {
+                        self.imageView.image = image
+                    }
+                }
+                })
+            }
+    }
+
+}
