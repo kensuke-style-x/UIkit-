@@ -55,7 +55,8 @@ class ViewController: UIViewController, UIDragInteractionDelegate,UIDropInteract
             itemProvider.loadObject(ofClass: UIImage.self, completionHandler: {(object, error)in
                 if let image = object as? UIImage {
                     DispatchQueue.main.async {
-                        self.imageView.image = image
+                    //droppedImageView//
+                        self.imageView.image = image 
                     }
                 }
                 })
