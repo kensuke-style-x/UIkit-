@@ -1,0 +1,86 @@
+import UIKit
+
+class PasteViewController: UIViewController,UIDropInteractionDelegate{
+    
+    var images = [UIImage]()
+    var views = [UIView]()
+    
+    var paste: UIPasteConfiguration?
+    var dropPoint = CGPoint.zero
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        pasteConfiguration = UIPasteConfiguration(forAccepting: UIImage.self)
+    }
+    
+    
+    //paste configuration
+    override func paste(itemProviders: [NSItemProvider]) {
+        for item in itemProviders {
+            loadImage(item, center: dropPoint)
+    }
+    }
+    
+    override func canPaste(_ itemProviders: [NSItemProvider]) -> Bool {
+        return true
+    }
+    
+    
+    
+    func loadImage(_ itemProvider: NSItemProvider, center: CGPoint){
+        itemProvider.loadObject(ofClass: UIImage.self) { object, _ in
+            DispatchQueue.main.async {
+
+                let image = object as! UIImage
+                let imageView = self.newImageView(image: image)
+                self.view.addSubview(imageView)
+                
+                
+                self.images.append(image)
+            }
+        }
+    }
+
+
+    func newImageView(image:UIImage)->UIImageView{
+        let imageView = UIImageView()
+        imageView.image = image
+        //paste image size
+        var size = image.size
+        let longestSide = max(size.width, size.height)
+        let maximumLength: CGFloat = 300
+        var scalefactor:CGFloat = 1
+
+        if longestSide > maximumLength {
+            scalefactor = maximumLength/longestSide
+        }
+        size = CGSize(width: round(size.width*scalefactor), height: round(size.height * scalefactor))
+        imageView.frame.size = size
+
+        views.append(imageView)
+        view.addSubview(imageView)
+
+
+        imageView.contentMode = .scaleToFill
+        imageView.isUserInteractionEnabled = true
+
+        return imageView
+    }
+    
+    
+
+    
+    
+    /*
+    // MARK: - Navigation
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destination.
+        // Pass the selected object to the new view controller.
+    }
+    */
+
+
+
+}
