@@ -1,0 +1,78 @@
+extension LayoutViewController:UICollectionViewDragDelegate,UICollectionViewDropDelegate{
+   
+    
+    
+    //perform drag
+    func collectionView(_ collectionView: UICollectionView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
+        
+        let image = self.images[indexPath.row]
+        let itemProvider = NSItemProvider(object: image)
+        let dragItem = UIDragItem(itemProvider: itemProvider)
+        
+        return[dragItem]
+        }
+    
+    
+    func collectionView(_ collectionView: UICollectionView, itemsForAddingTo session: UIDragSession, at indexPath: IndexPath, point: CGPoint) -> [UIDragItem] {
+        
+        let image = self.images[indexPath.row]
+        let itemProvider = NSItemProvider(object: image)
+        let dragItem = UIDragItem(itemProvider: itemProvider)
+        return [dragItem]
+    }
+    
+    //perform drop
+    func collectionView(_ collectionView: UICollectionView, canHandle session: UIDropSession) -> Bool {
+        return session.hasItemsConforming(toTypeIdentifiers: UIImage.readableTypeIdentifiersForItemProvider)
+    }
+    
+
+    func collectionView(_ collectionView: UICollectionView, performDropWith coordinator: UICollectionViewDropCoordinator) {
+        
+        let destinationIndexPath: IndexPath
+        if let indexPath = coordinator.destinationIndexPath{
+            
+            destinationIndexPath = indexPath
+        }
+        else
+        {
+            let section = layoutCollectionView.numberOfSections - 1
+            let row = layoutCollectionView.numberOfItems(inSection: section)
+            destinationIndexPath = IndexPath(row: row, section: section)
+            
+        }
+        
+        
+        for dragItem in coordinator.items {
+                    dragItem.dragItem.itemProvider.loadObject(ofClass: UIImage.self, completionHandler: {object,error in
+                        
+                        guard error == nil else {return print("Failed to load dragged item")}
+                        guard let draggedImage = object as? UIImage else
+                        {return}
+                        
+                        DispatchQueue.main.async {
+                            [self] in
+                            layoutCollectionView.performBatchUpdates({
+                                
+                                var indexPaths = [IndexPath]()
+                                
+                                for (index, item) in coordinator.items.enumerated(){
+                                        
+                                let indexPath = IndexPath(row: destinationIndexPath.row+index, section: destinationIndexPath.section)
+                                
+                                    self.images.insert(draggedImage, at: indexPath.row)
+                                    indexPaths.append(indexPath)
+                                }
+                                layoutCollectionView.insertItems(at: indexPaths)
+                            })
+                        }
+                        
+                    }
+                                                              )}
+    }
+    
+    
+    
+    }
+        
+    
