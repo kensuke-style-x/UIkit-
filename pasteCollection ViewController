@@ -1,0 +1,199 @@
+import UIKit
+
+class PasteCollectionViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout{
+    
+    
+    var images : [Image] = []
+    
+    
+//    private func imageArray(at indexPath:IndexPath) -> Image {
+//        return images.collectionImages[indexPath.item]
+//    }
+
+    @IBOutlet weak var pasteCollectionView: UICollectionView!
+    
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        // Do any additional setup after loading the view.
+        
+        pasteCollectionView.delegate = self
+        pasteCollectionView.dataSource = self
+        pasteCollectionView.register(PasteCollectionViewCell.nib(), forCellWithReuseIdentifier: "PasteCollectionViewCell")
+        
+        //layout
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        layout.itemSize = CGSize(width: view.frame.size.width/3.2, height: view.frame.size.height/3.2)
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        pasteCollectionView.collectionViewLayout = layout
+        view.addSubview(pasteCollectionView)
+        
+        //gesture
+        let gesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPressGesture(_:)))
+        
+        pasteCollectionView.addGestureRecognizer(gesture)
+        
+        //drag and drop delegate
+        pasteConfiguration = UIPasteConfiguration(forAccepting: UIImage.self)
+        pasteCollectionView.dragDelegate = self
+        pasteCollectionView.dragInteractionEnabled = true
+        pasteCollectionView.dropDelegate = self
+        pasteCollectionView.contentInset = UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4)
+        
+        view.addSubview(pasteCollectionView)
+    }
+    
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        pasteCollectionView.frame = view.bounds
+    }
+    
+    //gesture delegate
+    
+    @objc func handleLongPressGesture(_ gesture:UILongPressGestureRecognizer){
+        
+        guard let collectionView = pasteCollectionView else {
+            return
+        }
+        switch gesture.state {
+        case.began:
+            guard let targetIndexPath = collectionView.indexPathForItem(at: gesture.location(in: collectionView))else {
+                return
+            }
+            collectionView.beginInteractiveMovementForItem(at: targetIndexPath)
+            
+        case.changed:
+            collectionView.updateInteractiveMovementTargetPosition(gesture.location(in: collectionView))
+            
+        case.ended:
+            collectionView.endInteractiveMovement()
+            
+        default:
+            collectionView.cancelInteractiveMovement()
+        }
+        
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return images.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        let image = images[indexPath.row]
+        let cell = pasteCollectionView.dequeueReusableCell(withReuseIdentifier: "PasteCollectionViewCell", for: indexPath) as! PasteCollectionViewCell
+        
+        cell.backgroundColor = .darkGray
+        cell.setImage(image: image)
+        
+        return cell
+    }
+    
+    //Re-Order Method
+    func collectionView(_ collectionView: UICollectionView, canMoveItemAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+
+    func collectionView(_ collectionView: UICollectionView, moveItemAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        let item = images.remove(at: sourceIndexPath.row)
+        images.insert(item, at: destinationIndexPath.row)
+    }
+    
+}
+    
+
+extension PasteCollectionViewController:UICollectionViewDragDelegate,UICollectionViewDropDelegate {
+    
+    
+    // perform Drag
+    func collectionView(_ collectionView: UICollectionView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
+        
+        
+       
+        let image = self.images[indexPath.row]
+        let itemProvider = image.itemProvider
+        let dragItem = UIDragItem(itemProvider: itemProvider)
+        return [dragItem]
+        
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, itemsForAddingTo session: UIDragSession, at indexPath: IndexPath, point: CGPoint) -> [UIDragItem] {
+       
+        let image = self.images[indexPath.row]
+        let itemProvider = image.itemProvider
+        let dragItem = UIDragItem(itemProvider:itemProvider)
+        return [dragItem]
+    }
+    
+    
+    
+    //Drop delegate
+    func collectionView(_ collectionView: UICollectionView, canHandle session: UIDropSession) -> Bool {
+        
+        return session.hasItemsConforming(toTypeIdentifiers: UIImage.readableTypeIdentifiersForItemProvider)
+    }
+    
+    // Drop Insert //
+     
+     
+     func collectionView(_ collectionView: UICollectionView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UICollectionViewDropProposal {
+         if session.localDragSession != nil {
+             return UICollectionViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
+         } else {
+             return UICollectionViewDropProposal(operation: .copy, intent: .insertAtDestinationIndexPath)
+         }
+     }
+    
+    //perform drop
+    
+    func collectionView(_ collectionView: UICollectionView, performDropWith coordinator: UICollectionViewDropCoordinator) {
+        
+        let destinationIndexPath: IndexPath
+        if let indexPath = coordinator.destinationIndexPath{
+            
+            destinationIndexPath = indexPath
+        }
+        else
+        {
+            let section = pasteCollectionView.numberOfSections - 1
+            let row = pasteCollectionView.numberOfItems(inSection: section)
+            destinationIndexPath = IndexPath(row: row, section: section)
+            
+        }
+        
+        
+        for dragItem in coordinator.items {
+                    dragItem.dragItem.itemProvider.loadObject(ofClass: UIImage.self, completionHandler: {object,error in
+                        
+                       
+                        
+                        if let draggedImage = object as? UIImage {
+
+                        DispatchQueue.main.async {
+                            [self] in
+                                pasteCollectionView.performBatchUpdates({
+                                
+                                var indexPaths = [IndexPath]()
+                                
+                                for (index, item) in coordinator.items.enumerated(){
+                                        
+                                let indexPath = IndexPath(row: destinationIndexPath.row+index, section: destinationIndexPath.section)
+                                
+                                let imageList = Image(image: draggedImage)
+                                    self.images.insert(imageList, at: indexPath.row)
+                                    indexPaths.append(indexPath)
+                                }
+                                pasteCollectionView.insertItems(at: indexPaths)
+                                })
+                            }
+                        }
+                    }
+                   
+                                            )}
+        
+        }//performdrop last
+    
+        }//Last 
