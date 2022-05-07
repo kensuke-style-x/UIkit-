@@ -1,0 +1,22 @@
+import UIKit
+
+class PasteCollectionViewCell: UICollectionViewCell {
+
+    @IBOutlet weak var pasteImageView: UIImageView!
+    
+    
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        // Initialization code
+    }
+    
+    func setImage(image:Image){
+        pasteImageView.image = image.image
+    }
+    
+    static func nib()->UINib{
+        return UINib(nibName: "PasteCollectionViewCell", bundle: nil)
+    }
+
+}
