@@ -1,0 +1,112 @@
+import UIKit
+
+class ViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout {
+    
+    //Model
+    var images :[Image] = []
+    
+    @IBOutlet weak var collectionView: UICollectionView!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        //collectionView delegate
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.register(collectionViewCell.nib(), forCellWithReuseIdentifier: "collectionViewCell")
+        
+        //layout flow
+        let layout = UICollectionViewFlowLayout()
+        layout.itemSize = CGSize(width: 270, height: 480)
+        collectionView.collectionViewLayout = layout
+        view.addSubview(collectionView)
+        
+        //drag and drop delegate
+        collectionView.dragDelegate = self
+        collectionView.dropDelegate = self
+        collectionView.dragInteractionEnabled = true
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return images.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        let image = images[indexPath.row]
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionViewCell", for: indexPath)as! collectionViewCell
+        cell.setImage(image: image)
+        
+        return cell
+    }
+    
+    extension ViewController: UICollectionViewDragDelegate,UICollectionViewDropDelegate{
+    
+    //drag delegate
+    func collectionView(_ collectionView: UICollectionView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
+        
+        let image = self.images[indexPath.row]
+        let itemProvider = image.itemProvider
+        let dragItem = UIDragItem(itemProvider: itemProvider)
+        return [dragItem]
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, itemsForAddingTo session: UIDragSession, at indexPath: IndexPath, point: CGPoint) -> [UIDragItem] {
+        
+        let image = self.images[indexPath.row]
+        let itemProvider = image.itemProvider
+        let dragItem = UIDragItem(itemProvider: itemProvider)
+        return[dragItem]
+    }
+    
+    //drop delegate
+    func collectionView(_ collectionView: UICollectionView, canHandle session: UIDropSession) -> Bool {
+        return session.hasItemsConforming(toTypeIdentifiers: UIImage.readableTypeIdentifiersForItemProvider)
+    }
+    
+    
+    func collectionView(_ collectionView: UICollectionView, performDropWith coordinator: UICollectionViewDropCoordinator) {
+        
+        let destinationIndexPath:IndexPath
+        if let indexPath = coordinator.destinationIndexPath{
+            destinationIndexPath = indexPath
+        }
+        else {
+            let section = collectionView.numberOfSections - 1
+            let row = collectionView.numberOfItems(inSection: section)
+            destinationIndexPath = IndexPath(row: row, section: section)
+        }
+        
+        for dragItem in coordinator.items{
+            dragItem.dragItem.itemProvider.loadObject(ofClass:UIImage.self,completionHandler:{ object, error in
+                
+                if let droppedImage = object as? UIImage{
+                    
+                    DispatchQueue.main.async {
+                        [self] in
+                        collectionView.performBatchUpdates({
+                            var indexPaths = [IndexPath]()
+                            
+                            for (index,item) in
+                                    coordinator.items.enumerated(){
+                                
+                                let indexPath = IndexPath(row: destinationIndexPath.row+index,
+                                                          section: destinationIndexPath.section)
+                                let imageList = Image(image: droppedImage)
+                                self.images.insert(imageList, at: indexPath.row)
+                                indexPaths.append(indexPath)
+                            }
+                            collectionView.insertItems(at: indexPaths)
+
+                            })
+                        }
+                    }
+                }
+                
+            
+                                                )}
+        
+        }// Last Paragraph PerformDropWith
+        
+    
+}
