@@ -1,0 +1,21 @@
+import UIKit
+
+class collectionViewCell: UICollectionViewCell {
+
+    
+    @IBOutlet weak var imageView: UIImageView!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        // Initialization code
+    }
+    
+    func setImage(image:Image){
+        imageView.image = image.image
+    }
+    
+    static func nib()->UINib{
+        return UINib(nibName: "collectionViewCell", bundle: nil)
+    }
+    
+}
