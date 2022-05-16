@@ -1,0 +1,54 @@
+//Image Model//
+
+import Foundation
+import UIKit
+
+struct Image{
+    
+    let identifier = UUID()
+    var image :UIImage
+    init(image:UIImage){
+        self.image = image
+    }
+    
+    var itemProvider:NSItemProvider{
+        return NSItemProvider(object: image)
+    }
+    
+    var preview:()->UIDragPreview{
+        return{
+            let imageView = UIImageView(image: self.image)
+            imageView.bounds.size = CGSize(width: 160, height: 90)
+            imageView.frame = .infinite
+            return UIDragPreview(view:imageView)
+        }
+    }
+}
+
+extension Image: Equatable{
+    static func ==(lhs: Image, rhs: Image)->Bool{
+        return lhs.identifier == rhs.identifier
+    }
+}
+
+//ImageCollection Model//
+import UIKit
+
+struct imageCollection{
+    
+    let identifier = UUID()
+    var collectionImages = [Image]()
+    
+    func contains(image:Image)->Bool{
+        return collectionImages.contains(image)
+    }
+    
+    
+}
+
+extension imageCollection: Equatable{
+    static func ==(lhs:imageCollection,rhs:imageCollection)->Bool{
+        return lhs.identifier == rhs.identifier
+    }
+}
+
