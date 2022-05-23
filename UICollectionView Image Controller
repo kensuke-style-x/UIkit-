@@ -159,7 +159,11 @@ class ViewController: UIViewController,UICollectionViewDelegate,UICollectionView
         }
     }
     
-    
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        if let cell = collectionView.cellForItem(at: indexPath) as? CollectionViewCell {
+            cell.contentView.backgroundColor = nil
+        }
+    }
     
     
 }
