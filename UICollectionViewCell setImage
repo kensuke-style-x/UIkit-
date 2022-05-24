@@ -7,7 +7,7 @@ class collectionViewCell: UICollectionViewCell {
     
     //setEditing
     
-    var isEditing:Bool = false
+    var isEditingMode:Bool = false
     
     
     override func awakeFromNib() {
