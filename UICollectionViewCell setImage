@@ -5,6 +5,11 @@ class collectionViewCell: UICollectionViewCell {
     
     @IBOutlet weak var imageView: UIImageView!
     
+    //setEditing
+    
+    var isEditing:Bool = false
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
