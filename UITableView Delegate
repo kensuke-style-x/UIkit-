@@ -2,7 +2,7 @@ import UIKit
 
 class TodoListViewController: UITableViewController {
 
-    var itemArray = [""]
+    var itemArray = [Item]() 
     
     let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Idea.plist")
     
@@ -10,7 +10,7 @@ class TodoListViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-       print(dataFilePath)
+       loadIdeas()
         
     
         }
@@ -95,9 +95,9 @@ class TodoListViewController: UITableViewController {
         
         present(alert,animated: true, completion: nil)
         
-        saveIdeas()
+        self.saveIdeas()
         
-        loadIdeas()
+         loadIdeas()
         
         }
     
@@ -112,20 +112,22 @@ class TodoListViewController: UITableViewController {
         }catch{
             print("Error Encoding Data")
         }
+        self.tableView.reloadData()
     }
     
     //Decoding Data
     
     func loadIdeas() {
-        let decoder = PropertyListDecoder(
-        )
+        if let data = try? Data(contentsOf: dataFilePath!){
+        
+        let decoder = PropertyListDecoder()
         do {
-            let data_ = try decoder
-        }catch {
+           itemArray = try decoder.decode([Item].self,from:data)
+        }   catch {
             print("Error decoding")
+            }
         }
     }
-    
     
 
 }
