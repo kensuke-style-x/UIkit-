@@ -22,12 +22,20 @@ class LayoutViewController: UIViewController,UICollectionViewDataSource {
     }
     
     static func createLayout()->UICollectionViewCompositionalLayout{
+    
+        //cell spacing(margin)
+        let spacing : CGFloat = 10
+        
         //Item
         let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1)))
         
         //Group                            //.vertical//
         let group = NSCollectionLayoutGroup.horizontal(
             layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(2/5)), subitem: item, count: 2)
+        
+        //cell spacing setting  
+        
+        group.contentInsets = NSDirectionalEdgeInsets(top:spacing, leading:spacing,bottom:0,trailing:spacing)
         
         //Sections
         let section = NSCollectionLayoutSection(group: group)
