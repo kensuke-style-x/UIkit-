@@ -1,0 +1,38 @@
+class ManagementViewcontroller: UIViewController{
+
+
+@IBOutlet weak var inspirationTextView: UITextView!
+
+ override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        
+        inspirationTextView.delegate = self
+    
+        
+    }
+    
+
+
+}
+
+
+
+
+extension ManagementViewController:UITextViewDelegate {
+    
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        
+        let doneBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(ManagementViewController.doneBarButtonTapped))
+        
+        navigationItem.setRightBarButton(doneBarButtonItem, animated: true)
+        
+    }
+    
+    @objc
+    func doneBarButtonTapped(){
+        inspirationTextView.resignFirstResponder()
+        
+        navigationItem.setRightBarButton(nil, animated: true)
+    }
+    
