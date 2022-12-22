@@ -1,0 +1,8 @@
+//imageView 90° direction 
+
+@IBOutlet weak var imageView: UIImageView!
+
+let radians = 90 * CGFloat.pi / 180
+imageView.transform = imageView.transform.rotated(by: radians)
+
+
