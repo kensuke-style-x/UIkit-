@@ -26,6 +26,8 @@ class TodoListViewController: UITableViewController {
         
         
         cell.textLabel?.text = itemArray[indexPath.row]
+        //numberOfLines
+        cell.textLabel?.numberOfLines = 0
         
         return cell
     }
