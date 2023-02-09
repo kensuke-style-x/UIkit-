@@ -2,7 +2,11 @@
 
 @IBOutlet weak var imageView: UIImageView!
 
+override func viewDidLoad(){
+
+imageView.isUserInteractionEnabled = true
+
 let radians = 90 * CGFloat.pi / 180
 imageView.transform = imageView.transform.rotated(by: radians)
 
-
+}
