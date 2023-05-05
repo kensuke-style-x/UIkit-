@@ -1,0 +1,49 @@
+import UIKit
+
+class ViewController: UIViewController {
+
+
+    private let size : CGFloat = 200
+   
+    @IBOutlet weak var imageView: UIImageView!
+    
+    
+    
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        
+        
+        imageView.backgroundColor = .systemBlue
+
+        imageView.clipsToBounds = true
+        
+        imageView.image = UIImage(named: "Seven Star ClipViewController ImageView .001")
+
+        //pinch gesture
+        let pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(pinchGesture(_:)))
+        
+        view.addGestureRecognizer(pinchGesture)
+        
+    }
+    
+//Pinch Gesture    
+    @objc func pinchGesture(_ sender: UIPinchGestureRecognizer) {
+        
+        if sender.state == .began || sender.state == .changed {
+            let scale = sender.scale
+            imageView.frame = CGRect(x: 0, y: 0, width: size * scale, height: size * scale)
+            imageView.center = view.center
+            
+        }
+        
+    }
+    
+    
+    
+
+    
+    
+}
+
