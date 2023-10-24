@@ -1,19 +1,14 @@
+class CollectionViewController: UIViewController,UICollectionVioewDelegate{
 
-var window: UIWindow?
+ //show Subscription
 
-func showSaveViewController(){
-        
-        
-        self.window = UIWindow(frame: UIScreen.main.bounds)
-        
-        let storyBoard = UIStoryboard(name: "Main", bundle: nil)
-        
-        let saveViewController = storyBoard.instantiateViewController(identifier: "Save")
-        
-        let navigationController = UINavigationController(rootViewController: saveViewController)
-        
-        self.window?.rootViewController = navigationController
-        
-        self.window?.makeKeyAndVisible()
-   }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if indexPath.item == 0 {
+          performSegue(withIdentifier: "showSubscription", sender: nil)
+            
+        }
+    }
 
+
+    
+}//class
