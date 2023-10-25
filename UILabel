@@ -1,0 +1,20 @@
+
+@IBOutlet weak var label: UILabel!
+
+override func viewDidLoad(){
+
+
+ label.isUserInteratcionEnabled = true
+
+ label.addgestureRecognizer(UITapGestureRecogniozer(target:self, action:#selector(openLink(_:))))
+
+
+}
+
+@objc func openLink(_ sender:UITapGestureRecognizer){
+  if let url = URL("https://www.apple.com/legal/internet-services/itunes/dev/stdeula/"){
+  UIApplication.shared.open(url)
+  }
+}
+
+}
