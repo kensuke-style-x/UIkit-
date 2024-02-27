@@ -1,0 +1,35 @@
+    @IBOutlet weak var privacyPolicy: UILabel!
+    
+    @IBOutlet weak var privacyPolicyUrl: UILabel!
+    
+    @IBOutlet weak var termsOfUse: UILabel!
+    
+    @IBOutlet weak var termsOfUseUrl: UILabel!
+
+override func viewDidLoad(){
+//privacy policy
+      privacyPolicy.isUserInteractionEnabled = true
+        
+        privacyPolicy.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openLink(_:))))
+        privacyPolicyUrl.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openLink(_:))))
+        
+        
+        //termsOfUse
+        termsOfUse.isUserInteractionEnabled = true
+        termsOfUse.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openTermsOfUseLink(_:))))
+        termsOfUseUrl.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openTermsOfUseLink(_:))))
+        
+
+}
+
+ @objc func openLink(_ sender: UITapGestureRecognizer) {
+      if let url = URL(string: "https://kensuke-style-x.github.io/privacy/"){
+            UIApplication.shared.open(url)
+        }
+            }
+                                        
+@objc func openTermsOfUseLink(_ sender:UITapGestureRecognizer) {
+            if let url = URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/"){
+                UIApplication.shared.open(url)
+            }
+        }
