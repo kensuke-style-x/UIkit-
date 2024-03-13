@@ -1,0 +1,15 @@
+
+    
+    @IBAction func shareButtonTapped(_ sender: Any) {
+        
+        let movieURL = Bundle.main.url(forResource: "demoPlay2", withExtension: "mov")
+        
+        let activityViewController = UIActivityViewController(activityItems: [movieURL], applicationActivities: nil)
+        
+        activityViewController.popoverPresentationController?.sourceView = sender as? UIView
+        
+        present(activityViewController, animated: true)
+        
+    }
+    
+    
