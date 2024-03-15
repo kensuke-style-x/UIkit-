@@ -1,0 +1,24 @@
+import UIKit
+
+class ViewController: UIViewController {
+    
+    let iconView:UIImageView = {
+        let iconView = UIImageView(frame: CGRect(x: 0, y: 0, width: 300, height: 300))
+        iconView.contentMode = .scaleAspectFit
+        return iconView
+    }()
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        //iconview
+        view.addSubview(iconView)
+        iconView.center = view.center
+        let config = UIImage.SymbolConfiguration(weight: .thin)
+        iconView.image = UIImage(systemName: "star",withConfiguration: config)
+        iconView.tintColor = .systemBlue
+        
+    }
+    
+    
+
+}
