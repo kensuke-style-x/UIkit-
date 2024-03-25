@@ -84,11 +84,14 @@ class ViewController: UIViewController,UICollectionViewDelegate,UICollectionView
         return images.count
     }
     
-    
+    //second view controller
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
-        
-    }
+        if indexPath.row == 0 {
+        let vc = secondViewController()
+        present(vc, animated: true)
+        }
+    }    
     
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
