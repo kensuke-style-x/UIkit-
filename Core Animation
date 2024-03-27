@@ -1,0 +1,31 @@
+import UIKit
+
+class ViewController: UIViewController {
+
+    
+    @IBOutlet weak var iconImageView: UIImageView!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+       
+        animateAlpha()
+    }
+    
+    func animateAlpha(){
+        UIView.animate(withDuration: 3.0){ [self] in
+            iconImageView.alpha = 0
+            
+            
+        }
+    }
+
+    func moveIconView(){
+        UIView.animate(withDuration: 3.0, delay: 0.0, options: [.autoreverse]){ [self] in
+
+            iconImageView.frame.origin.x -= 50 //
+            iconImageView.frame.origin.x += 50 //
+        }
+        
+    }
+}
+
