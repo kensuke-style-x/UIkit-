@@ -1,0 +1,9 @@
+@IBAction func switchOn(_ sender: Any) {
+        
+        if (sender as AnyObject).isOn{
+            dayOrder()
+        } else {
+            generateFetchResult()
+        }
+    }
+
