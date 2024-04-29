@@ -1,0 +1,13 @@
+@IBAction func orderController(_ sender: UISegmentedControl) {
+        
+        switch sender.selectedSegmentIndex {
+        case 0:
+            generateFetchResult()
+        case 1:
+            dayOrder()
+        default:
+            generateFetchResult()
+        }
+        
+    }
+    
