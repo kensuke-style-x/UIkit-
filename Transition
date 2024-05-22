@@ -1,4 +1,38 @@
+//1 
+import UIKit
 
+class ViewController: UIViewController {
+
+    @IBOutlet weak var secondViewControllerButton: UIButton!
+    
+    var window: UIWindow?
+    
+    @IBAction func transition(_ sender: Any) {
+        
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let rootViewController =  windowScene.windows.first?.rootViewController as? UINavigationController else {
+            return
+        }
+        
+        let storyBoard = UIStoryboard(name:"Main",bundle:nil)
+        
+        if let secondViewController = storyBoard.instantiateViewController(withIdentifier:"Second")as? SecondViewController{
+            rootViewController.pushViewController(secondViewController,animated:true)
+            
+        }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do any additional setup after loading the view.
+    }
+
+    
+    
+
+}
+
+//2 
 var window: UIWindow?
 
 func showSaveViewController(){
