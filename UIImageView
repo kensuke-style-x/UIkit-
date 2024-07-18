@@ -18,8 +18,20 @@ class ViewController: UIViewController {
         imageView.frame = CGRect(x: 0, y: 0, width: view.frame.size.width - 50, height: view.frame.size.height - 50)
         //center 
         imageView.center = view.center
+        //content
+        imageView.contentMode = .scaleAspectFit //fit 
+        imageView.contentMode = .scaleAspectFill // full 
+        //layer
+        imageview.layer.cornerRadius = 8 
+        imageView.layer.borderWidth = 3
+        imageView.layer.borderColor = UIColor.systemBlue.cgcolor 
+        //shadow
+        picture.layer.shadowOffset = .init(width: 5, height: 10)
+        picture.layer.shadowColor = UIColor.lightGray.cgColor
+        picture.layer.shadowOpacity = 0.1
+            
         
-        
+
     }
 
 
