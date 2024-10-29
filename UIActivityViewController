@@ -1,15 +1,36 @@
+import UIKit
 
+class ViewController: UIViewController {
     
-    @IBAction func shareButtonTapped(_ sender: Any) {
+    @IBOutlet weak var imageView: UIImageView!
+    
+    
+    @IBOutlet weak var activityButton: UIButton!
+    
+    
+    @IBAction func activityButtontapped(_ sender: Any) {
         
-        let movieURL = Bundle.main.url(forResource: "demoPlay2", withExtension: "mov")
+        guard let image = imageView.image else {
+            return
+        }
         
-        let activityViewController = UIActivityViewController(activityItems: [movieURL], applicationActivities: nil)
+        let activityController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
         
-        activityViewController.popoverPresentationController?.sourceView = sender as? UIView
+        activityController.popoverPresentationController?.sourceView = (sender as! UIView)
         
-        present(activityViewController, animated: true)
+        present(activityController, animated: true)
         
     }
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do any additional setup after loading the view.
+    }
+    
+
+
+}
+
+
+    
     
     
