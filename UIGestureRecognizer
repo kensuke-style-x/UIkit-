@@ -25,6 +25,11 @@ class ViewController: UIViewController {
         let pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(pinchGesture(_:)))
         
         view.addGestureRecognizer(pinchGesture)
+
+        //tap gesture
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapGesture(_:)))
+        imageView.addGestureRecognizer(tapGesture)
+        imageView.isUserInteractionEnabled = true
         
     }
     
@@ -39,6 +44,32 @@ class ViewController: UIViewController {
         }
         
     }
+
+//Tap Gesture
+     @objc func tapGesture(_ sender: UITapGestureRecognizer){
+        
+        guard let image = imageView.image else {
+            return
+        }
+        
+        let activityController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
+        
+        if let popoverController = activityController.popoverPresentationController{
+            
+            popoverController.sourceView = imageView
+            
+            popoverController.sourceRect = imageView.bounds
+            
+            popoverController.permittedArrowDirections = .any
+        }
+        
+//        activityController.popoverPresentationController?.sourceView = (sender as! UIView)
+        
+        present(activityController, animated: true)
+        
+        
+    }
+
     
     
     
