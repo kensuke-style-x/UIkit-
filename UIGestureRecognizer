@@ -54,7 +54,7 @@ class ViewController: UIViewController {
         
         let activityController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
         
-        if let popoverController = activityController.popoverPresentationController{
+ //       if let popoverController = activityController.popoverPresentationController{
             
             popoverController.sourceView = imageView
             
@@ -63,7 +63,7 @@ class ViewController: UIViewController {
             popoverController.permittedArrowDirections = .any
         }
         
-//        activityController.popoverPresentationController?.sourceView = (sender as! UIView)
+     activityController.popoverPresentationController?.sourceView = (sender as! UIView)
         
         present(activityController, animated: true)
         
