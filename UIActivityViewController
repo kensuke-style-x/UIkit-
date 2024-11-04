@@ -15,6 +15,10 @@ class ViewController: UIViewController {
         }
         
         let activityController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
+
+        //custom example 
+        activityController.excludedActivityTypes = [.copyToPasteboard,.mail,.saveToCameraRoll,.assignToContact,.print,.openInIBooks,UIActivity.ActivityType(rawValue: "com.apple.mobilenotes.SharingExtension")]
+       
         
         activityController.popoverPresentationController?.sourceView = (sender as! UIView)
         
