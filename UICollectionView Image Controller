@@ -174,6 +174,34 @@ class ViewController: UIViewController,UICollectionViewDelegate,UICollectionView
             cell.contentView.backgroundColor = nil
         }
     }
+
+// Context Menu 
+
+     func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemsAt indexPaths: [IndexPath], point: CGPoint) -> UIContextMenuConfiguration? {
     
-    
+     let config = UIContextMenuConfiguration(identifier: nil,previewProvider: nil){ (elements) -> UIMenu? in
+        
+                let delete = UIAction(title: String(localized:"Delete")){ [self](action)in
+                
+                for indexPath in indexPaths {
+                    
+                    
+                    if collectionView.cellForItem(at: indexPath) is CollectionViewCell {
+                        
+                        self.images.remove(at: indexPath.row)
+                        
+                        collectionView.deleteItems(at: [indexPath])
+                        
+                    }
+                }
+            
+                }//delete
+            
+            
+            return UIMenu(title: "Star Search",image: nil,identifier: nil,
+            options: [],children: [starSearch,delete])
+            }
+            
+        return config
+    }
 }
