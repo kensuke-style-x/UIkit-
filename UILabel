@@ -5,8 +5,8 @@ override func viewDidLoad(){
 
 
  label.isUserInteratcionEnabled = true
-
- label.addgestureRecognizer(UITapGestureRecogniozer(target:self, action:#selector(openLink(_:))))
+ let tapGesture = UITapGestureRecognizer(target: self, action: #selector(openLink(_:)))
+ label.addgestureRecognizer(tapGesture)
 
 
 }
