@@ -1,0 +1,28 @@
+import UIKit
+
+class ViewController: UIViewController {
+    
+    @IBOutlet weak var loadingButton: UIButton!
+    
+    let loadingIndicator = UIActivityIndicatorView(style: .medium)
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // loading Indicator
+       
+        loadingIndicator.center = view.center
+        loadingIndicator.hidesWhenStopped = true
+        view.addSubview(loadingIndicator)
+    }
+    
+    
+    @IBAction func loadingButtonTapped(_ sender: Any) {
+        
+        loadingIndicator.startAnimating()
+    }
+    
+    
+    
+
+}
+
