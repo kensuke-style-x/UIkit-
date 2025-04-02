@@ -34,16 +34,19 @@ class TodoListViewController: UITableViewController {
     
     // TableView Deligate Method
     
-    //checkmark Method
+    //checkmark
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+        //check mark
         if tableView.cellForRow(at: indexPath)?.accessoryType == .checkmark {
             tableView.cellForRow(at: indexPath)?.accessoryType = .none
         } else {
             tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
         }
         
+        
     }
+
+    
     
     //delete Method
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
