@@ -1,0 +1,61 @@
+//firstViewController
+
+import UIKit
+
+class ViewController: UIViewController {
+
+    @IBOutlet weak var starButton: UIButton!
+    
+    override func viewDidLoad() {
+        
+        super.viewDidLoad()
+        
+        
+    }
+
+    @IBAction func starButtontapped(_ sender: Any) {
+        
+        NotificationCenter.default.post(name: Notification.Name("Star"), object: nil)
+        
+        starButton.isSelected = true
+        
+        
+    }
+    
+}
+
+//SecondViewController
+
+import UIKit
+
+class SecondViewController: UIViewController {
+    
+    
+    @IBOutlet weak var starButton: UIButton!
+    
+    override func viewWillAppear(_ animated: Bool) {
+        
+        super.viewWillAppear(animated)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(notificationCheck), name:Notification.Name("Star"), object: nil)
+        
+    }
+    
+    override func viewDidLoad() {
+        
+        super.viewDidLoad()
+        
+        
+
+       
+    }
+    
+    @objc func notificationCheck(){
+        
+        starButton.isSelected = true
+        
+    }
+    
+    
+
+}
