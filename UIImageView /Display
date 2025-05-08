@@ -1,0 +1,52 @@
+import UIKit
+
+class controlImageViewController: UIViewController {
+    
+
+    var timer:Timer?
+    
+    var currentIndex = 0
+    
+    @IBOutlet weak var controlImageView: UIImageView!
+    
+    
+    let displays: [UIImage] = [
+        
+        UIImage(named:"display1")!,
+        UIImage(named:"display2")!,
+        UIImage(named:"display3")!,
+        UIImage(named:"display4")!,
+        UIImage(named:"display5")!
+    ]
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        changeDisplay()
+       
+    }
+    
+    func changeDisplay(){
+        
+        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true){ _ in
+            
+            self.currentIndex += 1
+            
+            if self.currentIndex >= self.displays.count{
+                self.currentIndex = 0
+            }
+            
+            self.controlImageView.image = self.displays[self.currentIndex]
+            
+//            self.currentIndex = (self.currentIndex + 1) % self.displays.count
+        }
+    }
+    
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        timer?.invalidate()
+    }
+
+}
