@@ -1,0 +1,63 @@
+import UIKit
+
+class ViewController: UIViewController, UIImagePickerControllerDelegate,UINavigationControllerDelegate{
+    
+    var imagePicker: UIImagePickerController?
+    
+    
+    @IBOutlet weak var cameraButton: UIButton!
+    
+    
+    @IBOutlet weak var imageView: UIImageView!
+    
+    
+    
+    override func viewDidLoad() {
+        
+        super.viewDidLoad()
+        
+        imagePicker = UIImagePickerController()
+        imagePicker?.delegate = self
+
+     // imageView userInterractionEnabled → true 
+        
+    }
+    
+    
+    @IBAction func cameraAction(_ sender: Any) {
+        
+        if UIImagePickerController.isSourceTypeAvailable(.camera){
+            
+            
+            imagePicker?.sourceType = .camera
+            
+            present(imagePicker!,animated: true,completion: nil)
+            
+        } else {
+            print("カメラを使用出来ません。")
+        }
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        
+        
+        
+        if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage{
+                
+            imageView.image = image
+            
+            
+
+        }
+        
+        dismiss(animated: true,completion: nil)
+    }
+    
+//    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+//        dismiss(animated: true, completion: nil)
+//    }
+//    
+    
+    
+    
+}
