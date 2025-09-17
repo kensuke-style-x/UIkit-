@@ -1,0 +1,74 @@
+
+import UIKit
+
+class ViewController: UIViewController {
+    
+    
+    @IBOutlet weak var countImageView: UIImageView!
+    
+    private let starButton: UIButton = {
+            
+            let button = UIButton(type: .system)
+            button.setImage(UIImage(systemName: "star"), for: .normal)
+            button.setImage(UIImage(systemName: "star.fill"), for: .selected)
+            button.tintColor = .systemYellow
+            button.translatesAutoresizingMaskIntoConstraints = false
+            return button
+            
+        }()
+
+        private let likeLabel: UILabel = {
+            
+            let label = UILabel()
+            label.text = "0"
+            label.font = UIFont.boldSystemFont(ofSize: 20)
+            label.textColor = .systemYellow
+            label.translatesAutoresizingMaskIntoConstraints = false
+            return label
+            
+        }()
+        
+        private var starCount = 0 {
+            didSet {
+                likeLabel.text = "\(starCount)"
+            }
+            
+        }
+    
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        view.addSubview(starButton)
+        view.addSubview(likeLabel)
+                
+        NSLayoutConstraint.activate([
+                
+        starButton.trailingAnchor.constraint(equalTo: countImageView.trailingAnchor, constant: 0),
+        starButton.bottomAnchor.constraint(equalTo: countImageView.bottomAnchor,constant: 0),
+        starButton.widthAnchor.constraint(equalToConstant: 40),
+        starButton.heightAnchor.constraint(equalToConstant: 40),
+                    
+        likeLabel.centerYAnchor.constraint(equalTo: starButton.centerYAnchor),
+        likeLabel.trailingAnchor.constraint(equalTo: starButton.leadingAnchor, constant: -8)
+                                                
+        ])
+                
+        starButton.addTarget(self, action: #selector(didTapStar), for: .touchUpInside)
+    }
+    
+    @objc private func didTapStar(){
+        
+        if starButton.isSelected {
+            starCount += 0
+        } else {
+            starCount += 1
+        }
+        
+    }
+    
+    
+
+
+}
+
