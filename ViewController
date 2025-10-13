@@ -1,0 +1,17 @@
+func showSevenStar(){
+        
+        let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+        
+        if let sevenstarBoard = storyBoard.instantiateViewController(withIdentifier: "sevenstarBoard")as? SaveViewController{
+            
+            let navController = UINavigationController(rootViewController: sevenstarBoard)
+            
+            navController.modalPresentationStyle  = .formSheet
+            // view size 
+            navController.preferredContentSize = CGSize(width:480, height:600)
+            
+            self.present(navController,animated: true)
+            
+        }
+        
+    }
