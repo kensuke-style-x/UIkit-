@@ -1,0 +1,90 @@
+import UIKit
+
+class controlImageViewController: UIViewController {
+    
+
+    var timer:Timer?
+    
+    var currentIndex = 0
+    
+    @IBOutlet weak var controlImageView: UIImageView!
+    
+     
+    let imageURLs = [
+        
+     "https://display1",
+     "https://display2",
+     "https://display3", 
+      "https://display4", 
+      "https://display5"
+     
+      ]
+    
+    
+    override func viewDidLoad() {
+        
+        super.viewDidLoad()
+        
+        
+        displayChange()
+       
+        
+
+    }
+    
+    func displayChange(){
+        
+        //first display
+        loadImage(from: imageURLs[currentIndex])
+        
+        timer = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: true) { [weak self] _ in
+            
+        
+            guard let self = self else {
+                return
+            }
+            
+            self.showNextImage()
+        }
+        
+        
+    }
+    
+    
+
+    func showNextImage(){
+        
+        currentIndex = (currentIndex + 1) % imageURLs.count
+        let nextURL = imageURLs[currentIndex]
+        loadImage(from: nextURL)
+        
+    }
+    
+    func loadImage(from urlString: String){
+        
+        guard let url = URL(string: urlString) else {return}
+        
+        URLSession.shared.dataTask(with: url){ [weak self] data, response, error in
+            
+            guard let self = self else {return}
+            
+            if let error = error {
+                print("\(error.localizedDescription)")
+                return
+            }
+            
+            guard let data = data, let image = UIImage(data: data) else {
+                return
+            }
+            
+            DispatchQueue.main.async {
+                self.controlImageView.image = image
+            }
+        }.resume()
+    }
+    
+    deinit {
+        timer?.invalidate()
+    }
+
+}
